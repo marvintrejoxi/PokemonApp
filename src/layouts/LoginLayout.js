@@ -4,6 +4,10 @@ import Login from '../Login';
 const AppNavigator = createStackNavigator(
   {
     Login
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none'
   }
 );
 

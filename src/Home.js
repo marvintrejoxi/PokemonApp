@@ -18,9 +18,10 @@ class Home extends Component {
   }
 
   render() {
+    console.log(this.props.user)
     return(
       <View>
-        <Text>EN HOME</Text>
+        <Text>EN HOME: {this.props.user.name}</Text>
         <Button
           title='Ir a las regiones'
           onPress={this.goToRegions}
@@ -36,7 +37,8 @@ class Home extends Component {
 
 function mapStateToProps(state){
   return {
-    authorize: state.authorize
+    authorize: state.authorize,
+    user: state.user
   }
 }
 

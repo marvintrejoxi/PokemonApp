@@ -5,7 +5,6 @@ import LoginLayout from './layouts/LoginLayout'
 
 class AppLayout extends Component{
   render(){
-    console.log(this.props)
     if (this.props.authorize) {
       return(<SiteLayout />);
     }else{

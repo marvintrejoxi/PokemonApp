@@ -1,5 +1,8 @@
 const INITIAL_STATE = {
-  authorize: false
+  authorize: false,
+  user: {
+
+  }
 };
 
 function data(state=INITIAL_STATE, action) {
@@ -8,6 +11,13 @@ function data(state=INITIAL_STATE, action) {
       return {
         ...state,
         ...action.payload
+      }
+    case 'SET_USER_INFO':
+      return {
+        ...state,
+        user: {
+          ...action.payload
+        }
       }
     case 'DESTROY_SESSION':
       return INITIAL_STATE;
