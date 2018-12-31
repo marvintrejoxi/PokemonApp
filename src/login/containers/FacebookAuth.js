@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 class FacebookAuth extends Component{
 
-  handlePressFacebook = () => {
+  handlePress = () => {
     LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
       (result) => {
         if (result.isCancelled) {
@@ -47,7 +47,7 @@ class FacebookAuth extends Component{
       <View>
         <Button 
           title='Iniciar sesion con facebook'
-          onPress={this.handlePressFacebook}
+          onPress={this.handlePress}
         />
       </View>
     )
