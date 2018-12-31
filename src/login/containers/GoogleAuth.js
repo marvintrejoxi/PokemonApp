@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import firebase from 'react-native-firebase';
+import { View, StyleSheet } from 'react-native';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
 
-class Login extends Component {
-  handlePressGoogle = () => {
+class GoogleAuth extends Component{ 
+  handlePress = () => {
     GoogleSignin.configure({});
     GoogleSignin.hasPlayServices({
       showPlayServicesUpdateDialog: true
@@ -26,13 +26,13 @@ class Login extends Component {
             photo: user.user._user.photoURL,
             uid: user.user._user.uid,
           }
-        })
+        });
         this.props.dispatch({
           type: 'SET_AUTH',
           payload: {
             authorize: true
           }
-        })
+        });
       }).catch(error =>{
         console.log(error)
       }).done();
@@ -41,27 +41,19 @@ class Login extends Component {
     });
   }
 
-  render() {
+  render(){
     return(
-      <View style={styles.container}>
+      <View>
         <GoogleSigninButton
           style={{ width: 200, height: 60 }}
           size={GoogleSigninButton.Size.Icon}
           color={GoogleSigninButton.Color.Dark}
-          onPress={this.handlePressGoogle}
+          onPress={this.handlePress}
         />
       </View>
-    );
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-})
 
 function mapStateToProps(state){
   return {
@@ -69,4 +61,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps)(GoogleAuth);
