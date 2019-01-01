@@ -1,8 +1,7 @@
 const INITIAL_STATE = {
   authorize: false,
-  user: {
-
-  }
+  baseUrl: 'https://pokeapi.co/api/v2/',
+  user: {}
 };
 
 function data(state=INITIAL_STATE, action) {

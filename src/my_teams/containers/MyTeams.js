@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
-class Regions extends Component {
+class MyTeams extends Component {
   render() {
     return(
       <View>
-        <Text>ESTOY EN LAS REGIONES</Text>
+        <Text>ESTOY EN MIS EQUIPOS</Text>
       </View>
     );
   }
@@ -18,4 +18,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(Regions)
+export default connect(mapStateToProps)(MyTeams)
