@@ -1,6 +1,6 @@
 import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
 import Regions from '../regions/containers/Regions';
-import PokemonList from '../pokemons/containers/PokemonList';
+import CreateTeam from '../pokemons/containers/CreateTeam';
 import MyTeams from '../my_teams/containers/MyTeams';
 import Logout from '../logout/containers/Logout';
 
@@ -9,8 +9,8 @@ const StackNavigation = createStackNavigator(
     Regions: {
       screen: Regions,
     },
-    PokemonList: {
-      screen: PokemonList,
+    CreateTeam: {
+      screen: CreateTeam,
     }
   }
 );

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, Button, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation'
 import Item from '../components/Item'
 import VerticalSeparator from '../../shared/components/VerticalSeparator';
+import Loading from '../../shared/components/Loading';
 
 class Regions extends Component {
 
   state = {
-    regionsList: []
+    regionsList: [],
+    loading: true
   }
 
   static navigationOptions = () => {
@@ -19,6 +21,9 @@ class Regions extends Component {
 
   async componentDidMount() {
     await this.fetchRegions();
+    this.setState({
+      loading: false
+    })
   }
 
   async fetchRegions() {
@@ -58,7 +63,7 @@ class Regions extends Component {
   viewItem = (item) => {
     this.props.navigation.dispatch(
       NavigationActions.navigate({
-        routeName: 'PokemonList',
+        routeName: 'CreateTeam',
         params: {
           name: item.name,
           url: item.url
@@ -68,6 +73,9 @@ class Regions extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return(<Loading />)
+    }
     return(
       <View>
         <Text>

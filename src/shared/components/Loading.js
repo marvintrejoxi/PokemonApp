@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
 function Loading(props) {
   return(
     <View style={styles.container}>
-      <ActivityIndicator />
-      <Text>Cargando...</Text>
+      <ActivityIndicator size='large' />
     </View>
   );
 }
@@ -16,12 +15,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logo: {
-    width: 200,
-    height: 80,
-    resizeMode: 'contain',
-    marginBottom: 10,
   }
 });
 
