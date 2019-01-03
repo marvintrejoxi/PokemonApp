@@ -11,8 +11,9 @@ function SelectedTeamLayout(props) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 250,
-    padding: 10,
+    height: 275,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   }
 })
 

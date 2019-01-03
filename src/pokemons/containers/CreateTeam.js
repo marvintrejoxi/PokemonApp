@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
+import uuid from 'react-native-uuid';
+import { NavigationActions, StackActions } from 'react-navigation'
 
 import Loading from '../../shared/components/Loading';
 import SelectedTeamLayout from '../components/SelectedTeamLayout';
@@ -8,7 +11,6 @@ import CreateTeamLayout from '../components/CreateTeamLayout';
 import PokemonListLayout from '../components/PokemonListLayout';
 
 import Empty from '../../shared/components/Empty';
-import VerticalSeparator from '../../shared/components/VerticalSeparator';
 import Pokemon from '../components/Pokemon';
 import SelectedPokemon from '../components/SelectedPokemon';
 import SelectedTeamEmpty from '../components/SelectedTeamEmpty';
@@ -29,7 +31,7 @@ class CreateTeam extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     await this.fetchRegion();
     await this.fetchPokedex();
     this.setState({
@@ -70,7 +72,7 @@ class CreateTeam extends Component {
   }
 
   keyExtractor = (item) => {
-    return(item.entry_number.toString());
+    return(item.pokemon_species.name.toString());
   }
 
   renderEmpty = () => {
@@ -81,16 +83,13 @@ class CreateTeam extends Component {
     return(<SelectedTeamEmpty />);
   }
 
-  itemSeparator = () => {
-    return(<VerticalSeparator />)
-  }
-
   renderPokemon = ({item}) => {
     return(
       <Pokemon 
         {...item} 
         onPokemonSelected={() => { this.pokemonSelected(item)}}
         disableAddButton={this.state.teamList.length < 6 ? false : true }
+        onPokemonInfo={() => this.pokemonInfo(item)}
       />
     )
   }
@@ -100,6 +99,7 @@ class CreateTeam extends Component {
       <SelectedPokemon
         {...item}
         onRemovePokemon={() => {this.removePokemon(item)}}
+        onPokemonInfo={() => this.pokemonInfo(item)}
       />
     )
   }
@@ -128,7 +128,39 @@ class CreateTeam extends Component {
   }
 
   saveTeam = () => {
-    // FIREBASE
+    let generateUuid = uuid.v1();
+    let id = generateUuid.split('-')[0]
+
+    firebase.database().ref(`pokedexes/${this.props.user.uid}/${id}`).set({
+      pokedexUrl: this.state.pokedexUrl,
+      urlRegion: this.props.navigation.getParam('url', ''),
+      regionName: this.props.navigation.getParam('name', ''),
+      team: this.state.teamList
+    }).then(() => {
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Regions', key: 'Regions' })
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
+      this.props.navigation.dispatch(
+        NavigationActions.navigate({ routeName: 'MyTeams', key: 'MyTeams' })
+      )
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+
+  pokemonInfo = (item) => {
+    const navigationAction = NavigationActions.navigate({
+      routeName: 'ShowPokemon',
+      params: {
+        item: item
+      }
+    });
+
+    this.props.navigation.dispatch(navigationAction)
   }
 
   render() {
@@ -140,10 +172,10 @@ class CreateTeam extends Component {
       <CreateTeamLayout>
         <SelectedTeamLayout>
           <FlatList 
+            horizontal
             data={this.state.teamList}
             keyExtractor={this.keyExtractor}
             ListEmptyComponent={this.renderSelectedTeamEmpty}
-            // ItemSeparatorComponent={this.itemSeparator}
             renderItem={this.renderSeletedPokemon}
           />
           <SaveSelectedTeam 
@@ -158,7 +190,6 @@ class CreateTeam extends Component {
             data={this.state.pokemonList}
             keyExtractor={this.keyExtractor}
             ListEmptyComponent={this.renderEmpty}
-            // ItemSeparatorComponent={this.itemSeparator}
             renderItem={this.renderPokemon}
           />
         </PokemonListLayout>

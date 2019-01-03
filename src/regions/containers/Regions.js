@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation'
-import Item from '../components/Item'
-import VerticalSeparator from '../../shared/components/VerticalSeparator';
+import Region from '../components/Region'
 import Loading from '../../shared/components/Loading';
+import RegionLayout from '../components/RegionsLayout';
+import Empty from '../../shared/components/Empty';
 
 class Regions extends Component {
 
@@ -19,7 +20,7 @@ class Regions extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     await this.fetchRegions();
     this.setState({
       loading: false
@@ -44,23 +45,19 @@ class Regions extends Component {
   }
 
   renderEmpty = () => {
-    return <Text>NO hay sugerencias</Text>
+    return(<Empty message='no se encontro ninguna región' />)
   }
 
-  itemSeparator = () => {
-    return(<VerticalSeparator />)
-  }
-
-  renderItem = ({item}) => {
+  renderRegion = ({item}) => {
     return(
-      <Item 
+      <Region 
         {...item} 
-        onPress={() => { this.viewItem(item) }}
+        onPress={() => { this.viewRegion(item) }}
       />
     )
   }
 
-  viewItem = (item) => {
+  viewRegion = (item) => {
     this.props.navigation.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateTeam',
@@ -77,21 +74,16 @@ class Regions extends Component {
       return(<Loading />)
     }
     return(
-      <View>
-        <Text>
-          EN HOME: {this.props.user.name}
-        </Text>
-        <Text>
-          AQUI VOY A HACER EL FETCH DE LAS REGIONES
-        </Text>
+      <RegionLayout
+        user={this.props.user}
+      >
         <FlatList 
           data={this.state.regionsList}
           keyExtractor={this.keyExtractor}
           ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.itemSeparator}
-          renderItem={this.renderItem}
+          renderItem={this.renderRegion}
         />
-      </View>
+      </RegionLayout>
     );
   }
 }
